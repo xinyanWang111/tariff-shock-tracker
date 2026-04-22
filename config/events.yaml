@@ -1,0 +1,84 @@
+# Tariff Shock Tracker — Configuration
+# All event dates and tickers used in the analysis are defined here
+# so they can be modified without touching the source code.
+
+# =============================================================
+# EVENT DATES
+# =============================================================
+# Key 2025 US tariff announcement dates.
+# NOTE: Verify and update these before running the analysis.
+# Students should cross-check each date against primary news sources.
+events:
+  - name: "Liberation Day Tariff Announcement"
+    date: "2025-04-02"
+    description: "Trump announces sweeping reciprocal tariffs on major trading partners"
+  - name: "China Retaliation"
+    date: "2025-04-04"
+    description: "China announces 34% retaliatory tariffs on US imports"
+  - name: "Tariff Pause"
+    date: "2025-04-09"
+    description: "90-day pause on non-China reciprocal tariffs announced"
+
+# =============================================================
+# STOCK UNIVERSE
+# =============================================================
+# Tariff-sensitive stocks grouped by country and sector.
+stocks:
+  us:
+    semiconductors:
+      - { ticker: "NVDA", name: "NVIDIA" }
+      - { ticker: "AMD",  name: "AMD" }
+      - { ticker: "INTC", name: "Intel" }
+      - { ticker: "QCOM", name: "Qualcomm" }
+    automotive:
+      - { ticker: "TSLA", name: "Tesla" }
+      - { ticker: "F",    name: "Ford" }
+      - { ticker: "GM",   name: "General Motors" }
+    consumer_electronics:
+      - { ticker: "AAPL", name: "Apple" }
+      - { ticker: "DELL", name: "Dell" }
+      - { ticker: "HPQ",  name: "HP Inc." }
+    retail:
+      - { ticker: "WMT",  name: "Walmart" }
+      - { ticker: "TGT",  name: "Target" }
+      - { ticker: "COST", name: "Costco" }
+  china:
+    semiconductors:
+      - { ticker: "SMIC.HK", name: "SMIC" }          # 中芯国际 HK
+      - { ticker: "0981.HK", name: "SMIC (HK)" }
+    automotive:
+      - { ticker: "NIO",   name: "NIO" }
+      - { ticker: "XPEV",  name: "XPeng" }
+      - { ticker: "LI",    name: "Li Auto" }
+      - { ticker: "BYDDY", name: "BYD (ADR)" }
+    consumer_electronics:
+      - { ticker: "1810.HK", name: "Xiaomi" }
+      - { ticker: "992.HK",  name: "Lenovo" }
+    ecommerce_retail:
+      - { ticker: "BABA", name: "Alibaba" }
+      - { ticker: "JD",   name: "JD.com" }
+      - { ticker: "PDD",  name: "PDD Holdings" }
+
+# =============================================================
+# MARKET INDICES
+# =============================================================
+indices:
+  us_market: "^GSPC"       # S&P 500
+  china_market: "000001.SS" # SSE Composite Index
+  risk_free: "^IRX"        # 13-week Treasury Bill
+
+# =============================================================
+# EVENT STUDY PARAMETERS
+# =============================================================
+event_study:
+  estimation_window: 120   # Trading days for market-model estimation
+  estimation_gap: 30       # Gap between estimation and event window
+  event_window_pre: 5      # Days before event
+  event_window_post: 10    # Days after event
+
+# =============================================================
+# DATA DOWNLOAD RANGE
+# =============================================================
+data_range:
+  start_date: "2024-06-01"
+  end_date: "2025-06-30"

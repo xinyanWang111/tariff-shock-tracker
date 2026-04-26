@@ -1,167 +1,170 @@
-# 📊 Tariff Shock Tracker
-
-> Quantifying the market impact of the 2025 US tariff announcements on US–China tariff-sensitive sectors using event study methodology and CAPM-based abnormal returns.
-
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://github.com/YOUR_USERNAME/tariff-shock-tracker/actions/workflows/tests.yml/badge.svg)](https://github.com/YOUR_USERNAME/tariff-shock-tracker/actions)
-
----
-
-## 🎯 Project Overview
-
-When the US government announced new tariffs on Chinese imports in 2025, markets reacted in minutes — but **by how much, for whom, and for how long?** This project answers that question quantitatively.
-
-**Target audience**: retail investors, finance students, and policy analysts who want evidence-based, reproducible measurements of how policy shocks translate into stock price movements.
-
-**Analytical problem**: Quantify the abnormal returns and volatility shifts experienced by tariff-sensitive US and Chinese listed firms (semiconductors, automotive, consumer electronics, retail) around the 2025 tariff announcement dates, and compare the magnitude and persistence of the market reaction across the two countries.
-
----
-
-## 🔍 Key Features
-
-- **Event study methodology** — computes Cumulative Abnormal Returns (CAR) around event dates using the market model
-- **CAPM-based risk metrics** — beta, alpha, Sharpe ratio, and rolling volatility for every stock
-- **Cross-country comparison** — side-by-side US vs. China sector reaction dashboard
-- **Interactive Streamlit dashboard** — explore any stock, any event window, any sector
-- **Reproducible pipeline** — one-command data refresh, fully tested code
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.10 or higher
-- Internet connection (for downloading market data via `yfinance`)
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/tariff-shock-tracker.git
-cd tariff-shock-tracker
-
-# Create a virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate      # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Run the Analysis
-
-```bash
-# Option 1: Open the main notebook
-jupyter notebook notebooks/04_final_analysis.ipynb
-
-# Option 2: Launch the interactive dashboard
-streamlit run dashboard/streamlit_app.py
-```
-
----
-
-## 📁 Repository Structure
-
-```
-tariff-shock-tracker/
-├── README.md                    # You are here
-├── requirements.txt             # Python dependencies
-├── LICENSE                      # MIT License
-├── config/
-│   └── events.yaml              # Event dates and stock tickers
-├── data/
-│   ├── raw/                     # Raw data from yfinance
-│   └── processed/               # Cleaned datasets
-├── notebooks/
-│   ├── 01_data_acquisition.ipynb
-│   ├── 02_event_study.ipynb
-│   ├── 03_risk_metrics.ipynb
-│   └── 04_final_analysis.ipynb  # Main narrative notebook
-├── src/
-│   ├── data_loader.py           # Download & clean market data
-│   ├── event_study.py           # CAR / AAR calculations
-│   ├── risk_metrics.py          # Beta, Sharpe, CAPM
-│   └── visualizations.py        # Chart generation
-├── tests/                       # Unit tests (pytest)
-├── dashboard/
-│   └── streamlit_app.py         # Interactive dashboard
-├── reports/
-│   └── reflection_report.md     # 500–800 word reflection
-└── .github/workflows/
-    └── tests.yml                # CI pipeline
-```
-
----
-
-## 📊 Methodology
-
-### 1. Event Study (Market Model)
-
-For each stock _i_ and event date _t_, we estimate expected returns using the market model over an estimation window of 120 trading days ending 30 days before the event:
-
-$$R_{i,t} = \alpha_i + \beta_i R_{m,t} + \varepsilon_{i,t}$$
-
-Abnormal returns (AR) are then computed during the event window [-5, +10]:
-
-$$AR_{i,t} = R_{i,t} - (\hat{\alpha}_i + \hat{\beta}_i R_{m,t})$$
-
-Cumulative Abnormal Returns (CAR) are aggregated across the event window and tested for statistical significance using the standard _t_-test.
-
-### 2. Risk Metrics
-
-- **Beta** — sensitivity to market movements (CAPM)
-- **Sharpe Ratio** — risk-adjusted return vs. 3-month US Treasury
-- **Rolling 30-day Volatility** — annualized standard deviation of returns
-
-### 3. Sector Comparison
-
-Equal-weighted portfolios are built for each (country × sector) bucket, and their CAR series are compared statistically and visually.
-
----
-
-## 📈 Key Findings
-
-_(To be filled in after final analysis — see `notebooks/04_final_analysis.ipynb` for full results.)_
-
----
-
-## 🗂️ Data Sources
-
-| Dataset | Source | Access Date |
-|---|---|---|
-| US & Chinese stock prices | Yahoo Finance via `yfinance` | April 2026 |
-| Market index (S&P 500, SSE Composite) | Yahoo Finance via `yfinance` | April 2026 |
-| Risk-free rate (^IRX) | Yahoo Finance via `yfinance` | April 2026 |
-| Tariff event dates | Compiled from public news sources | April 2026 |
-
-All data used are publicly available and used solely for educational purposes.
-
----
-
-## 🧪 Running Tests
-
-```bash
-pytest tests/ -v
-```
-
----
-
-## 📝 License
-
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
-## 🙋 Author
-
-**Yiying [Your Full Name]**  
-BA Accounting, Year 2 · Xi'an Jiaotong-Liverpool University  
-Course: ACC102 Business Analytics with Python  
-Submission date: April 2026
-
----
-
-## 📚 Acknowledgements
-
-Built for the ACC102 Mini Assignment (Track 2 — GitHub Data Analysis Project). See `reports/reflection_report.md` for the full methodological reflection and AI disclosure.
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "e9b4e194-15a2-4773-8f7b-3896a45eff56",
+   "metadata": {},
+   "source": [
+    "# 📈 Tech Stock Performance Analysis: US & Chinese Markets (2023–2024)\n",
+    "\n",
+    "**ACC102 Individual Coursework — Track 3: Data Analysis Agent**  \n",
+    "**Author:** Yiying | **Institution:** Xi’an Jiaotong-Liverpool University  \n",
+    "**Data Source:** WRDS/CRSP | **Target Audience:** Retail Investors\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 🔍 Project Overview\n",
+    "\n",
+    "This project analyses the stock performance of **four major US tech companies** and **four Chinese tech ADRs** (American Depositary Receipts) listed on US exchanges, covering **January 2023 – December 2024**.\n",
+    "\n",
+    "|Group      |Tickers                |Exchange     |\n",
+    "|-----------|-----------------------|-------------|\n",
+    "|US Tech    |AAPL, MSFT, GOOGL, TSLA|NASDAQ / NYSE|\n",
+    "|CN Tech ADR|BABA, BIDU, JD, NTES   |NYSE / NASDAQ|\n",
+    "\n",
+    "**Research Questions:**\n",
+    "\n",
+    "1. How did US and Chinese tech stocks perform in 2023–2024?\n",
+    "1. Which stocks outperformed or underperformed the S&P 500 benchmark?\n",
+    "1. What are the risk-return profiles for retail investors considering both markets?\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 📊 Key Findings\n",
+    "\n",
+    "|Metric                             |Best Performer|Value                    |\n",
+    "|-----------------------------------|--------------|-------------------------|\n",
+    "|Sharpe Ratio (risk-adjusted return)|**AAPL**      |1.4312                   |\n",
+    "|Lowest Volatility                  |**AAPL**      |0.2151 (annualised)      |\n",
+    "|Lowest Max Drawdown                |**MSFT**      |-15.49%                  |\n",
+    "|Highest Cumulative Return          |**TSLA**      |High return, highest risk|\n",
+    "\n",
+    "**Investor Recommendations:**\n",
+    "\n",
+    "- 🟢 **Conservative:** AAPL, MSFT (positive alpha + Sharpe > 1.0 + low drawdown)\n",
+    "- 🟡 **Balanced:** Mix of stable US tech + selective CN ADR exposure\n",
+    "- 🔴 **Aggressive:** TSLA, CN ADRs (higher potential upside, significantly higher risk)\n",
+    "- 📦 **Diversification:** Low US–CN cross-correlation suggests portfolio diversification benefit\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 🗂️ Project Structure\n",
+    "\n",
+    "```\n",
+    "ACC102-Tech-Stock-Analysis/\n",
+    "│\n",
+    "├── ACC102_Tech_Stock_Analysis.ipynb   # Main analysis notebook (Cells A–M)\n",
+    "├── requirements.txt                    # Python dependencies\n",
+    "├── .gitignore                          # Files excluded from version control\n",
+    "├── reflection_report.md                # AI disclosure & methodology reflection\n",
+    "└── README.md                           # This file\n",
+    "```\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 📈 Analysis Sections\n",
+    "\n",
+    "|Section|Content                                                                              |\n",
+    "|-------|-------------------------------------------------------------------------------------|\n",
+    "|1      |Project Overview                                                                     |\n",
+    "|2      |Data Acquisition (WRDS/CRSP)                                                         |\n",
+    "|3      |Data Cleaning & Preparation                                                          |\n",
+    "|4      |US Tech Stock Analysis (price trends, volatility, cumulative return)                 |\n",
+    "|5      |Upgraded Metrics — Sharpe Ratio, Max Drawdown, Correlation, Box Plot, Monthly Heatmap|\n",
+    "|6      |Chinese Tech ADR Analysis                                                            |\n",
+    "|7      |Benchmark Comparison vs S&P 500 (Alpha Analysis)                                     |\n",
+    "|8      |US vs CN Cross-Market Comparison                                                     |\n",
+    "|9      |Key Findings & Investor Recommendations                                              |\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 🗃️ Data Sources\n",
+    "\n",
+    "|Dataset                                |Source              |Period   |\n",
+    "|---------------------------------------|--------------------|---------|\n",
+    "|US tech stock daily prices & returns   |WRDS/CRSP `crsp.dsf`|2023–2024|\n",
+    "|Chinese tech ADR daily prices & returns|WRDS/CRSP `crsp.dsf`|2023–2024|\n",
+    "|S&P 500 market index returns           |WRDS/CRSP `crsp.dsi`|2023–2024|\n",
+    "\n",
+    "\n",
+    "> ⚠️ **WRDS Access Required:** This notebook connects to the Wharton Research Data Services (WRDS) database. You will need a valid WRDS account to run the data acquisition cells. All data is used solely for educational purposes.\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## ⚙️ Setup & Usage\n",
+    "\n",
+    "### 1. Clone the repository\n",
+    "\n",
+    "```bash\n",
+    "git clone https://github.com/YOUR_USERNAME/ACC102-Tech-Stock-Analysis.git\n",
+    "cd ACC102-Tech-Stock-Analysis\n",
+    "```\n",
+    "\n",
+    "### 2. Install dependencies\n",
+    "\n",
+    "```bash\n",
+    "pip install -r requirements.txt\n",
+    "```\n",
+    "\n",
+    "### 3. Run the notebook\n",
+    "\n",
+    "```bash\n",
+    "jupyter notebook ACC102_Tech_Stock_Analysis.ipynb\n",
+    "```\n",
+    "\n",
+    "> Run cells **in order from top to bottom**. The notebook is structured so each section depends on variables defined in earlier cells.\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 🤖 AI Disclosure\n",
+    "\n",
+    "This project was completed as part of ACC102 coursework at XJTLU. AI tools (including Claude by Anthropic) were used to assist with:\n",
+    "\n",
+    "- Code debugging and optimisation\n",
+    "- Visualisation design suggestions\n",
+    "- README and documentation drafting\n",
+    "\n",
+    "All analytical decisions, data interpretation, and final write-up reflect the author’s own understanding. See `reflection_report.md` for full AI disclosure.\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "## 📝 License\n",
+    "\n",
+    "This project is for educational purposes only. Data accessed via WRDS is subject to WRDS Terms of Use.\n",
+    "\n",
+    "-----\n",
+    "\n",
+    "*ACC102 Business Analytics with Python | Xi’an Jiaotong-Liverpool University | April 2026*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e3ae41aa-1e1f-412b-92c3-d2d5ef9a6794",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:base] *",
+   "language": "python",
+   "name": "conda-base-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

@@ -1,8 +1,50 @@
-wrds>=3.1.6
+# =============================================================
+
+# Tariff Shock Tracker — Python Dependencies
+
+# =============================================================
+
+# Data source: WRDS (CRSP for US stocks, CSMAR for China stocks)
+
+# Last updated: April 2026
+
+# — WRDS Database Access —
+
+wrds>=3.2.0
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0
+
+# — Data Manipulation —
+
 pandas>=2.0.0
 numpy>=1.24.0
+pyyaml>=6.0
+
+# — Statistical Analysis —
+
+scipy>=1.11.0
+statsmodels>=0.14.0
+
+# — Visualization —
+
 matplotlib>=3.7.0
 seaborn>=0.12.0
-scipy>=1.11.0
+plotly>=5.17.0
+
+# — Interactive Dashboard —
+
+streamlit>=1.30.0
+
+# — Notebook Environment —
+
 jupyter>=1.0.0
-ipykernel>=6.0.0
+ipykernel>=6.25.0
+
+# — Testing —
+
+pytest>=7.4.0
+
+# — Utilities —
+
+python-dotenv>=1.0.0
+tqdm>=4.66.0

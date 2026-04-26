@@ -1,170 +1,130 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "id": "e9b4e194-15a2-4773-8f7b-3896a45eff56",
-   "metadata": {},
-   "source": [
-    "# 📈 Tech Stock Performance Analysis: US & Chinese Markets (2023–2024)\n",
-    "\n",
-    "**ACC102 Individual Coursework — Track 3: Data Analysis Agent**  \n",
-    "**Author:** Yiying | **Institution:** Xi’an Jiaotong-Liverpool University  \n",
-    "**Data Source:** WRDS/CRSP | **Target Audience:** Retail Investors\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 🔍 Project Overview\n",
-    "\n",
-    "This project analyses the stock performance of **four major US tech companies** and **four Chinese tech ADRs** (American Depositary Receipts) listed on US exchanges, covering **January 2023 – December 2024**.\n",
-    "\n",
-    "|Group      |Tickers                |Exchange     |\n",
-    "|-----------|-----------------------|-------------|\n",
-    "|US Tech    |AAPL, MSFT, GOOGL, TSLA|NASDAQ / NYSE|\n",
-    "|CN Tech ADR|BABA, BIDU, JD, NTES   |NYSE / NASDAQ|\n",
-    "\n",
-    "**Research Questions:**\n",
-    "\n",
-    "1. How did US and Chinese tech stocks perform in 2023–2024?\n",
-    "1. Which stocks outperformed or underperformed the S&P 500 benchmark?\n",
-    "1. What are the risk-return profiles for retail investors considering both markets?\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 📊 Key Findings\n",
-    "\n",
-    "|Metric                             |Best Performer|Value                    |\n",
-    "|-----------------------------------|--------------|-------------------------|\n",
-    "|Sharpe Ratio (risk-adjusted return)|**AAPL**      |1.4312                   |\n",
-    "|Lowest Volatility                  |**AAPL**      |0.2151 (annualised)      |\n",
-    "|Lowest Max Drawdown                |**MSFT**      |-15.49%                  |\n",
-    "|Highest Cumulative Return          |**TSLA**      |High return, highest risk|\n",
-    "\n",
-    "**Investor Recommendations:**\n",
-    "\n",
-    "- 🟢 **Conservative:** AAPL, MSFT (positive alpha + Sharpe > 1.0 + low drawdown)\n",
-    "- 🟡 **Balanced:** Mix of stable US tech + selective CN ADR exposure\n",
-    "- 🔴 **Aggressive:** TSLA, CN ADRs (higher potential upside, significantly higher risk)\n",
-    "- 📦 **Diversification:** Low US–CN cross-correlation suggests portfolio diversification benefit\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 🗂️ Project Structure\n",
-    "\n",
-    "```\n",
-    "ACC102-Tech-Stock-Analysis/\n",
-    "│\n",
-    "├── ACC102_Tech_Stock_Analysis.ipynb   # Main analysis notebook (Cells A–M)\n",
-    "├── requirements.txt                    # Python dependencies\n",
-    "├── .gitignore                          # Files excluded from version control\n",
-    "├── reflection_report.md                # AI disclosure & methodology reflection\n",
-    "└── README.md                           # This file\n",
-    "```\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 📈 Analysis Sections\n",
-    "\n",
-    "|Section|Content                                                                              |\n",
-    "|-------|-------------------------------------------------------------------------------------|\n",
-    "|1      |Project Overview                                                                     |\n",
-    "|2      |Data Acquisition (WRDS/CRSP)                                                         |\n",
-    "|3      |Data Cleaning & Preparation                                                          |\n",
-    "|4      |US Tech Stock Analysis (price trends, volatility, cumulative return)                 |\n",
-    "|5      |Upgraded Metrics — Sharpe Ratio, Max Drawdown, Correlation, Box Plot, Monthly Heatmap|\n",
-    "|6      |Chinese Tech ADR Analysis                                                            |\n",
-    "|7      |Benchmark Comparison vs S&P 500 (Alpha Analysis)                                     |\n",
-    "|8      |US vs CN Cross-Market Comparison                                                     |\n",
-    "|9      |Key Findings & Investor Recommendations                                              |\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 🗃️ Data Sources\n",
-    "\n",
-    "|Dataset                                |Source              |Period   |\n",
-    "|---------------------------------------|--------------------|---------|\n",
-    "|US tech stock daily prices & returns   |WRDS/CRSP `crsp.dsf`|2023–2024|\n",
-    "|Chinese tech ADR daily prices & returns|WRDS/CRSP `crsp.dsf`|2023–2024|\n",
-    "|S&P 500 market index returns           |WRDS/CRSP `crsp.dsi`|2023–2024|\n",
-    "\n",
-    "\n",
-    "> ⚠️ **WRDS Access Required:** This notebook connects to the Wharton Research Data Services (WRDS) database. You will need a valid WRDS account to run the data acquisition cells. All data is used solely for educational purposes.\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## ⚙️ Setup & Usage\n",
-    "\n",
-    "### 1. Clone the repository\n",
-    "\n",
-    "```bash\n",
-    "git clone https://github.com/YOUR_USERNAME/ACC102-Tech-Stock-Analysis.git\n",
-    "cd ACC102-Tech-Stock-Analysis\n",
-    "```\n",
-    "\n",
-    "### 2. Install dependencies\n",
-    "\n",
-    "```bash\n",
-    "pip install -r requirements.txt\n",
-    "```\n",
-    "\n",
-    "### 3. Run the notebook\n",
-    "\n",
-    "```bash\n",
-    "jupyter notebook ACC102_Tech_Stock_Analysis.ipynb\n",
-    "```\n",
-    "\n",
-    "> Run cells **in order from top to bottom**. The notebook is structured so each section depends on variables defined in earlier cells.\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 🤖 AI Disclosure\n",
-    "\n",
-    "This project was completed as part of ACC102 coursework at XJTLU. AI tools (including Claude by Anthropic) were used to assist with:\n",
-    "\n",
-    "- Code debugging and optimisation\n",
-    "- Visualisation design suggestions\n",
-    "- README and documentation drafting\n",
-    "\n",
-    "All analytical decisions, data interpretation, and final write-up reflect the author’s own understanding. See `reflection_report.md` for full AI disclosure.\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "## 📝 License\n",
-    "\n",
-    "This project is for educational purposes only. Data accessed via WRDS is subject to WRDS Terms of Use.\n",
-    "\n",
-    "-----\n",
-    "\n",
-    "*ACC102 Business Analytics with Python | Xi’an Jiaotong-Liverpool University | April 2026*"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "e3ae41aa-1e1f-412b-92c3-d2d5ef9a6794",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python [conda env:base] *",
-   "language": "python",
-   "name": "conda-base-py"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.13.9"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+# 📈 Tech Stock Performance Analysis: US & Chinese Markets (2023–2024)
+
+**ACC102 Individual Coursework — Track 3: Data Analysis Agent**  
+**Author:** Yiying | **Institution:** Xi’an Jiaotong-Liverpool University  
+**Data Source:** WRDS/CRSP | **Target Audience:** Retail Investors
+
+-----
+
+## 🔍 Project Overview
+
+This project analyses the stock performance of **four major US tech companies** and **four Chinese tech ADRs** (American Depositary Receipts) listed on US exchanges, covering **January 2023 – December 2024**.
+
+|Group      |Tickers                |Exchange     |
+|-----------|-----------------------|-------------|
+|US Tech    |AAPL, MSFT, GOOGL, TSLA|NASDAQ / NYSE|
+|CN Tech ADR|BABA, BIDU, JD, NTES   |NYSE / NASDAQ|
+
+**Research Questions:**
+
+1. How did US and Chinese tech stocks perform in 2023–2024?
+1. Which stocks outperformed or underperformed the S&P 500 benchmark?
+1. What are the risk-return profiles for retail investors considering both markets?
+
+-----
+
+## 📊 Key Findings
+
+|Metric                             |Best Performer|Value                    |
+|-----------------------------------|--------------|-------------------------|
+|Sharpe Ratio (risk-adjusted return)|**AAPL**      |1.4312                   |
+|Lowest Volatility                  |**AAPL**      |0.2151 (annualised)      |
+|Lowest Max Drawdown                |**MSFT**      |-15.49%                  |
+|Highest Cumulative Return          |**TSLA**      |High return, highest risk|
+
+**Investor Recommendations:**
+
+- 🟢 **Conservative:** AAPL, MSFT (positive alpha + Sharpe > 1.0 + low drawdown)
+- 🟡 **Balanced:** Mix of stable US tech + selective CN ADR exposure
+- 🔴 **Aggressive:** TSLA, CN ADRs (higher potential upside, significantly higher risk)
+- 📦 **Diversification:** Low US–CN cross-correlation suggests portfolio diversification benefit
+
+-----
+
+## 🗂️ Project Structure
+
+```
+ACC102-Tech-Stock-Analysis/
+│
+├── ACC102_Tech_Stock_Analysis.ipynb   # Main analysis notebook (Cells A–M)
+├── requirements.txt                    # Python dependencies
+├── .gitignore                          # Files excluded from version control
+├── reflection_report.md                # AI disclosure & methodology reflection
+└── README.md                           # This file
+```
+
+-----
+
+## 📈 Analysis Sections
+
+|Section|Content                                                                              |
+|-------|-------------------------------------------------------------------------------------|
+|1      |Project Overview                                                                     |
+|2      |Data Acquisition (WRDS/CRSP)                                                         |
+|3      |Data Cleaning & Preparation                                                          |
+|4      |US Tech Stock Analysis (price trends, volatility, cumulative return)                 |
+|5      |Upgraded Metrics — Sharpe Ratio, Max Drawdown, Correlation, Box Plot, Monthly Heatmap|
+|6      |Chinese Tech ADR Analysis                                                            |
+|7      |Benchmark Comparison vs S&P 500 (Alpha Analysis)                                     |
+|8      |US vs CN Cross-Market Comparison                                                     |
+|9      |Key Findings & Investor Recommendations                                              |
+
+-----
+
+## 🗃️ Data Sources
+
+|Dataset                                |Source              |Period   |
+|---------------------------------------|--------------------|---------|
+|US tech stock daily prices & returns   |WRDS/CRSP `crsp.dsf`|2023–2024|
+|Chinese tech ADR daily prices & returns|WRDS/CRSP `crsp.dsf`|2023–2024|
+|S&P 500 market index returns           |WRDS/CRSP `crsp.dsi`|2023–2024|
+
+
+> ⚠️ **WRDS Access Required:** This notebook connects to the Wharton Research Data Services (WRDS) database. You will need a valid WRDS account to run the data acquisition cells. All data is used solely for educational purposes.
+
+-----
+
+## ⚙️ Setup & Usage
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/ACC102-Tech-Stock-Analysis.git
+cd ACC102-Tech-Stock-Analysis
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the notebook
+
+```bash
+jupyter notebook ACC102_Tech_Stock_Analysis.ipynb
+```
+
+> Run cells **in order from top to bottom**. The notebook is structured so each section depends on variables defined in earlier cells.
+
+-----
+
+## 🤖 AI Disclosure
+
+This project was completed as part of ACC102 coursework at XJTLU. AI tools (including Claude by Anthropic) were used to assist with:
+
+- Code debugging and optimisation
+- Visualisation design suggestions
+- README and documentation drafting
+
+All analytical decisions, data interpretation, and final write-up reflect the author’s own understanding. See `reflection_report.md` for full AI disclosure.
+
+-----
+
+## 📝 License
+
+This project is for educational purposes only. Data accessed via WRDS is subject to WRDS Terms of Use.
+
+-----
+
+*ACC102 Business Analytics with Python | Xi’an Jiaotong-Liverpool University | April 2026*

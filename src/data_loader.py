@@ -7,7 +7,7 @@ This module handles all data acquisition from Yahoo Finance via `yfinance`.
 All functions are deterministic given the same inputs and are unit-tested
 in tests/test_data_loader.py.
 
-Author: Yiying
+Author: xinyan,Wang
 """
 
 from __future__ import annotations

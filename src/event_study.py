@@ -10,7 +10,7 @@ Implements the classic market-model approach (MacKinlay, 1997):
     3. The residual (actual - expected) is the Abnormal Return (AR).
     4. Sum AR over the event window to get the Cumulative Abnormal Return (CAR).
 
-Author: Yiying
+Author: xinyan.Wang
 """
 
 from __future__ import annotations

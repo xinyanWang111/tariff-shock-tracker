@@ -12,7 +12,7 @@ References
 - CAPM : Sharpe (1964), Lintner (1965)
 - Sharpe Ratio : Sharpe (1994), "The Sharpe Ratio", JPM
 
-Author: Yiying
+Author: xinyan.Wang
 """
 
 from __future__ import annotations
